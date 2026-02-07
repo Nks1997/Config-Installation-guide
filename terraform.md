@@ -19,6 +19,7 @@ Update packages and install required dependencies:
 ```bash
 sudo apt update
 sudo apt install -y wget gnupg software-properties-common curl
+```bash
 
 ---
 
