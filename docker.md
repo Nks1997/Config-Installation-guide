@@ -38,19 +38,24 @@
 ## Docker Installation on Windows (Using PowerShell)
 
 1. Download Docker Desktop Installer
+   ```cmd
    Invoke-WebRequest -UseBasicParsing -OutFile docker-installer.exe "https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe"
 
 2. Install Docker Desktop
+   ```cmd
    Start-Process -Wait -FilePath .\docker-installer.exe
 
 3. Start Docker Desktop
+   ```cmd
    Start-Process "C:\Program Files\Docker\Docker\Docker Desktop.exe"
 
 4. Verify Docker installation
+   ```cmd
    docker --version
    docker info
 
 5. Optional: Enable WSL 2 backend
+   ```cmd
    Open Docker Desktop > Settings > General > Use the WSL 2 based engine > Apply & Restart
 
 ---
