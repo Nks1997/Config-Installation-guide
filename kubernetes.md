@@ -33,7 +33,7 @@ sudo mkdir -p -m 755 /etc/apt/keyrings
 
 ### Step 3: Add Kubernetes signing key
 ```bash
-echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.35/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.35/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
 ```
 ### Step 4: Add Kubernetes apt repository
 ```bash
