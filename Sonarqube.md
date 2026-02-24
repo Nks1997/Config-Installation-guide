@@ -1,47 +1,21 @@
-# SonarQube Installation on Linux (Step-by-Step)
-
-This guide shows how to install and configure SonarQube on Linux using bash commands step by step.
+# SonarQube Installation Commands
 
 ---
 
-## Step 1: Install prerequisites (Java & unzip)
+## 1. Linux Installation Commands
 ```bash
 sudo apt update
 sudo apt install -y openjdk-17-jdk unzip wget
-```
-Check Java is installed:
-```bash
 java -version
-```
----
 
-## Step 2: Create a dedicated SonarQube user
-```bash
 sudo useradd -r -s /bin/false sonar
-```
----
 
-## Step 3: Download SonarQube
-```bash
-SONAR_VERSION="10.5.0.60888" 
-SONAR_ZIP="sonarqube-$SONAR_VERSION.zip"
-SONAR_URL="https://binaries.sonarsource.com/Distribution/sonarqube/$SONAR_ZIP"
-
-cd /tmp
-wget $SONAR_URL
-```
----
-
-## Step 4: Extract and move to /opt
-```bash
-sudo unzip $SONAR_ZIP -d /opt/
+SONAR_VERSION="10.5.0.60888"
+wget https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-$SONAR_VERSION.zip
+sudo unzip sonarqube-$SONAR_VERSION.zip -d /opt/
 sudo mv /opt/sonarqube-$SONAR_VERSION /opt/sonarqube
 sudo chown -R sonar:sonar /opt/sonarqube
-```
----
 
-## Step 5: Configure systemd service
-```bash
 sudo tee /etc/systemd/system/sonar.service > /dev/null <<EOF
 [Unit]
 Description=SonarQube service
@@ -61,32 +35,72 @@ TimeoutSec=600
 [Install]
 WantedBy=multi-user.target
 EOF
-```
----
 
-## Step 6: Reload systemd and enable/start SonarQube
-```bash
 sudo systemctl daemon-reload
 sudo systemctl enable sonar
 sudo systemctl start sonar
-```
-Check the service status:
-```bash
 sudo systemctl status sonar --no-pager
 ```
 ---
 
-## Step 7: Access SonarQube
+## 2. Docker Installation Commands
+```bash
+docker pull sonarqube:lts-community
+docker run -d --name sonarqube -p 9000:9000 sonarqube:lts-community
 
-Open a browser and go to:
+# Optional for low-memory environments
+docker run -d --name sonarqube -p 9000:9000 -e SONAR_ES_BOOTSTRAP_CHECKS_DISABLE=true sonarqube:lts-community
 
-http://localhost:9000
+docker ps
+docker logs -f sonarqube
+```
+---
 
-Default credentials:
+## 3. Windows Installation Commands
 
-Username: admin
-Password: admin
+# Download and extract SonarQube manually
+# Navigate to bin\windows-x86-64
 
+StartSonar.bat
+# Optional: install as a Windows service
+InstallNTService.bat
+
+# Edit sonar.properties if using a database
+# Access at http://localhost:9000
+
+---
+
+## 4. Kubernetes / AKS Installation Commands
+
+# Add SonarQube Helm repository
+```bash
+helm repo add oteemocharts https://oteemo.github.io/charts
+helm repo update
+```
+# Install SonarQube in AKS cluster
+```bash
+helm install sonarqube oteemocharts/sonarqube --set service.type=LoadBalancer --set postgresql.postgresqlPassword=sonar
+```
+# Check LoadBalancer IP
+```bash
+kubectl get svc sonarqube
+```
+# List all Helm releases
+```bash
+helm list -A
+```
+# Check SonarQube pods
+```bash
+kubectl get pods -l app.kubernetes.io/instance=sonarqube
+```
+# Show Helm release values
+```bash
+helm get values sonarqube -n default
+```
+# Show all resources installed by Helm
+```bash
+kubectl get all -l app.kubernetes.io/instance=sonarqube -n default
+```
 # SonarQube Installation on Windows (Step-by-Step)
 
 This guide shows how to install and configure SonarQube on Windows.
