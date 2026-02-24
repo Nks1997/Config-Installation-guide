@@ -59,15 +59,16 @@ steps:
 - task: SonarQubePublish@5
   inputs:
     pollingTimeoutSec: '300'
-
+```
 Notes:
 
 projectKey is a unique identifier (not a token).
 
 Authentication comes from the Azure DevOps service connection.
 
-4. Maven Java Projects
+## 4. Maven Java Projects
 pom.xml Snippet
+```bash
 <properties>
     <sonar.projectKey>MyMavenApp</sonar.projectKey>
     <sonar.host.url>http://sonar.company.com</sonar.host.url>
@@ -82,7 +83,9 @@ pom.xml Snippet
         </plugin>
     </plugins>
 </build>
-Azure DevOps Pipeline YAML
+```
+## Azure DevOps Pipeline YAML
+```yaml
 trigger:
 - main
 
@@ -110,13 +113,14 @@ steps:
 - task: SonarQubePublish@5
   inputs:
     pollingTimeoutSec: '300'
-
+```
 Notes:
 
 Token is passed because Maven plugin runs outside Azure DevOps tasks.
 
-5. Gradle Projects
+## 5. Gradle Projects
 build.gradle Snippet
+```bash
 plugins {
     id "org.sonarqube" version "4.0.0.2929"
 }
@@ -128,7 +132,9 @@ sonarqube {
         property "sonar.login", "${System.getenv('SONAR_TOKEN')}"
     }
 }
-Azure DevOps Pipeline YAML
+```
+## Azure DevOps Pipeline YAML
+```yaml
 trigger:
 - main
 
@@ -156,7 +162,9 @@ steps:
 - task: SonarQubePublish@5
   inputs:
     pollingTimeoutSec: '300'
-6. Node.js / JavaScript / TypeScript Projects
+```
+## 6. Node.js / JavaScript / TypeScript Projects
+```bash
 sonar-project.properties
 sonar.projectKey=MyNodeApp
 sonar.projectName=MyNodeApp
@@ -166,7 +174,9 @@ sonar.tests=test
 sonar.javascript.lcov.reportPaths=coverage/lcov.info
 sonar.host.url=http://sonar.company.com
 sonar.login=${SONAR_TOKEN}
-Azure DevOps Pipeline YAML
+```
+## Azure DevOps Pipeline YAML
+```yaml
 trigger:
 - main
 
@@ -208,14 +218,14 @@ steps:
 - task: SonarQubePublish@5
   inputs:
     pollingTimeoutSec: '300'
-
+```
 Notes:
 
 Token is required because Node.js scanner runs outside Azure DevOps tasks.
 
 Include LCOV coverage reports for full analysis.
 
-7. Key Points
+## 7. Key Points
 
 Project Key → unique identifier for all projects, never a token.
 
